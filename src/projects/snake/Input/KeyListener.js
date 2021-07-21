@@ -3,6 +3,11 @@ class KeyListener {
         this.onKeyDownListeners = [];
         this.onKeyUpListeners = [];
     }
+    
+    clear = () => {
+        this.onKeyDownListeners = [];
+        this.onKeyUpListeners = [];
+    }
 
     keyUp = (e) => {
         this.onKeyUpListeners.forEach(listener => {

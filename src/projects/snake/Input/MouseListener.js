@@ -7,6 +7,13 @@ class MouseListener {
         this.onMoveListeners = [];
         this.onClickListeners = [];
     }
+    
+    clear = () => {
+        this.onWheelListeners = [];
+        this.onDragListeners = [];
+        this.onMoveListeners = [];
+        this.onClickListeners = [];
+    }
 
     init = () => {
         var x = 0;

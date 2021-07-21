@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  background-color: #282c34;
+   /* background-color: #282c34;  */
 }
 
 html, body, #app, #app>div {
@@ -19,7 +19,7 @@ html, body, #app, #app>div {
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #282c34; 
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -37,18 +37,17 @@ html, body, #app, #app>div {
 }
 
 .App-body {
-  background-color: #282c34;
+  /* background-color: #282c34; */
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 1vmin);
-  color: white;
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-   -khtml-user-select: none; /* Konqueror HTML */
-     -moz-user-select: none; /* Old versions of Firefox */
-      -ms-user-select: none; /* Internet Explorer/Edge */
-          user-select: none; /* Non-prefixed version, currently
-                                supported by Chrome, Opera and Firefox */                                
+  /* color: white; */
+  -webkit-touch-callout: none; 
+  -webkit-user-select: none;
+   -khtml-user-select: none; 
+     -moz-user-select: none; 
+      -ms-user-select: none; 
+          user-select: none;                             
 }
 
 .fit-screen {
@@ -60,11 +59,11 @@ html, body, #app, #app>div {
 }
 
 .App-components {
-  background-color: #2a2a2a;
+  /* background-color: #2a2a2a; */
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 1vmin);
-  color: white;
+  /* color: white; */
   padding-left: 1.5rem;
   padding-right: 1.5rem;
 }

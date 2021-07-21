@@ -11,7 +11,7 @@ window.requestAnimFrame = (function () {
         window.webkitRequestAnimationFrame ||
         window.mozRequestAnimationFrame ||
         function (callback) {
-            window.setTimeout(callback, 1000 / 60);
+            window.setTimeout(callback, 10000 / 60);
         };
 })();
 
@@ -20,34 +20,46 @@ export default class Main extends Component {
     constructor(props) {
         super(props)
         this.lastTime = 0;
-
+        this.running = false;
     }
+
+    autoUpdate = () => {
+        if(this.running)
+        {
+            GameInstance.update();
+        }
+    };
+
+    beginAuto = () => {
+        this.nIntervId = setInterval(this.autoUpdate, 100);
+    };
 
     init() {
         MouseEvent.init();
         KeyEvent.init();
         GameInstance.init();
-
+        this.beginAuto();
+        this.running = true;
     }
 
     update = () => {
-        var now = Date.now();
-        var dt = (now - this.lastTime) / 1000.0;
+        if(this.running)
+        {
+            var now = Date.now();
+            var dt = (now - this.lastTime) / 1000.0;
 
-        this.lastTime = now;
+            this.lastTime = now;
+                    
+            GameInstance.render(dt);
 
-        GameInstance.update(dt);
-
-        this.doRender();
-
-        window.requestAnimationFrame(this.update);
+            window.requestAnimationFrame(this.update);
+        }
     }
-
-
-    doRender = () => {
-        GLR.clear(0, 0, 0, 1);
+    componentWillUnmount() {
+        this.running = false;
+        MouseEvent.clear();
+        KeyEvent.clear();
     }
-
     componentDidMount() {
         //Get the canvas and grab the GL Context
         const canvas = document.querySelector('canvas');
@@ -59,29 +71,30 @@ export default class Main extends Component {
         const webGL = canvas.getContext("experimental-webgl", {
             antialias: false
         });
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
         webGL.viewportWidth = canvas.width;
         webGL.viewportHeight = canvas.height;
 
         //Initialise the GL Renderer
-        GLR.init(webGL);
+        GLR.initGL(webGL);
 
         //Initialise the game state
         this.init();
 
         //Start the update/render loop
-        window.requestAnimationFrame(this.update);
-
-
+        this.update();
     }
 
     render() {
         return (
-            <canvas id="canvas" width="1000" height="1000" style={{ border: '1px solid black' }}>
+            <canvas id="canvas"  style={{ border: '1px solid black' }}>
                 Your browser doesn't appear to support the
                 <code>&lt;canvas&gt;</code> element.
             </canvas>
         )
     }
-
-
 }
+
