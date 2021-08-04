@@ -112,17 +112,20 @@ class GLRenderer {
 
     render = () => {
         const GL = this.gl;
-        GL.viewport(0, 0, GL.drawingBufferWidth, GL.drawingBufferHeight);
-        GL.clearColor(0, 0, 0, 1);
-        GL.clear(this.gl.COLOR_BUFFER_BIT);
-
 
         const canvas = document.querySelector('canvas');
         if (canvas) {
-            canvas.style.width = "100%";
-            canvas.style.height = "100%";
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
+            const canvasWidth  = canvas.clientWidth;
+            const canvasHeight = canvas.clientHeight;
+    
+            const shouldResize = canvas.width  !== canvasWidth ||
+                               canvas.height !== canvasHeight;
+           
+            //This will ensure the canvas is always square
+            if (shouldResize) {
+              canvas.width  = canvasWidth;
+              canvas.height = canvasWidth;
+            }
 
             GL.viewportWidth = canvas.width;
             GL.viewportHeight = canvas.height;
@@ -131,6 +134,10 @@ class GLRenderer {
 
         this.width = GL.drawingBufferWidth;
         this.height = GL.drawingBufferHeight;
+
+        GL.viewport(0, 0, GL.drawingBufferWidth, GL.drawingBufferHeight);
+        GL.clearColor(0, 0, 0, 1);
+        GL.clear(this.gl.COLOR_BUFFER_BIT);
 
         if (this.tileMap) {
             //Assuming a width of 800 and a height of 800. 800 / (8/2) = 800 / 4 = 200 or 1/4th of half of the screen. Assuming 16x16 map, 800/8 = 100 or 1/8th of half of the screen.

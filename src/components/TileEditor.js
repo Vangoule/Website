@@ -25,6 +25,7 @@ import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
 
 import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import Box from "@material-ui/core/Box";
 
 const images = {};
 
@@ -44,7 +45,6 @@ const Grid = withStyles({
 const CenterGrid = withStyles({
     root: {
         width: '100%',
-        height: '0%',
     },
 })(NormalGrid);
 
@@ -55,7 +55,7 @@ const Container = withStyles({
         overflow: "hidden",
         //       border: "1px solid blue",
         fontSize: 30,
-        
+
         width: "auto"
     },
     media: {
@@ -91,11 +91,9 @@ const TableCell = withStyles({
 
 const CenterContainer = withStyles({
     root: {
-        height: "88vh",
-        minHeight: 400,
-        fontSize: 30,
-
-    },
+        padding: "0px",
+        margin: "0px",
+    }
 })(Container);
 
 const Paper = withStyles({
@@ -136,7 +134,7 @@ export default class TileEditor extends Component {
             createNew: false,
         }
 
-        
+
 
     }
 
@@ -156,167 +154,175 @@ export default class TileEditor extends Component {
         const classes = this.props;
         return (
             <div className="App" >
-                    <div className="App-body fit-screen">
-                        <div className="App-components" margin="0px" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
+                <div className="App-body fit-screen">
+                    <div className="App-components" margin="0px" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
 
-                            <Grid container direction="row" alignItems="center" padding="0px" margin="0px">
-                                <Grid item xs padding="0px" margin="0px" paddingLeft="23px">
-                                    <HashLink to="/#projects"><Typography align="left" padding="0px" margin="0px" variant="h4" component="h4" color="textPrimary">Return</Typography></HashLink>
-                                </Grid>
-                                <Grid item xs paddingRight="23px">
-                                    <ThemeMode />
-                                </Grid>
+                        <Grid container direction="row" alignItems="center" padding="0px" margin="0px">
+                            <Grid item xs padding="0px" margin="0px" paddingLeft="23px">
+                                <HashLink to="/#projects"><Typography align="left" padding="0px" margin="0px" variant="h4" component="h4" color="textPrimary">Return</Typography></HashLink>
                             </Grid>
+                            <Grid item xs paddingRight="23px">
+                                <ThemeMode />
+                            </Grid>
+                        </Grid>
 
-                            <Grid
-                                container
-                                direction="row"
-                                alignItems="center"
-                                spacing={0} style={{ padding: "0px", margin: "0px" }}>
+                        <Grid
+                            container
+                            direction="row"
+                            alignItems="center"
+                            justify="center"
+                            spacing={0} style={{ padding: "0px", margin: "0px" }}>
 
-                                <Grid item xs={3}>
-                                    <Container style={{ paddingRight: "0px" }} >
-                                        <Paper ref={this.tileSetRef} >Tileset
-                                            <Container >
-                                                <TableContainer >
-                                                    <Table className={classes.table} cellPadding="0" cellSpacing="0" >
-                                                        <TableBody padding="none" >
-                                                            {this.rows.map((items, index) => {
-                                                                return (
-                                                                    <TableRow key={index}>
-                                                                        {items.map((id, cIndex) => {
-                                                                            var tileID = id + 3;
-                                                                            if (images['./tile (' + tileID + ').png']) {
-                                                                                let val = tileID - 3;
-                                                                                let row = Math.floor(val / 16);
-                                                                                let col = (val) - (16 * row);
-                                                                                let actualID = ((15 - row) * 16) + col;
-                                                                                let isSelected = {
-                                                                                    outline: "1px solid black",
+                            <Grid item xs={3}>
+                                <Container style={{ paddingRight: "0px" }} >
+                                    <Paper ref={this.tileSetRef} >Tileset
+                                        <Container >
+                                            <TableContainer >
+                                                <Table className={classes.table} cellPadding="0" cellSpacing="0" >
+                                                    <TableBody padding="none" >
+                                                        {this.rows.map((items, index) => {
+                                                            return (
+                                                                <TableRow key={index}>
+                                                                    {items.map((id, cIndex) => {
+                                                                        var tileID = id + 3;
+                                                                        if (images['./tile (' + tileID + ').png']) {
+                                                                            let val = tileID - 3;
+                                                                            let row = Math.floor(val / 16);
+                                                                            let col = (val) - (16 * row);
+                                                                            let actualID = ((15 - row) * 16) + col;
+                                                                            let isSelected = {
+                                                                                outline: "1px solid black",
+                                                                                marginTop: "1px",
+                                                                                marginLeft: "1px",
+                                                                                padding: "1px",
+                                                                                left: "1px"
+                                                                            }
+                                                                            if (this.state.nextTile === actualID) {
+                                                                                isSelected = {
+                                                                                    outline: "1px solid red",
                                                                                     marginTop: "1px",
                                                                                     marginLeft: "1px",
-                                                                                    padding: "1px",
-                                                                                    left: "1px"
-                                                                                }
-                                                                                if (this.state.nextTile === actualID) {
-                                                                                    isSelected = {
-                                                                                        outline: "1px solid red",
-                                                                                        marginTop: "1px",
-                                                                                        marginLeft: "1px",
-                                                                                        position: "relative",
-                                                                                        
-                                                                                    }
-                                                                                }
-                                                                                return (
+                                                                                    position: "relative",
 
-                                                                                    <TableCell style={isSelected} padding="none" key={cIndex}>
-                                                                                        <img width="100%" height="100%" onClick={() => { this.setState({ nextTile: actualID }); }} src={images['./tile (' + tileID + ').png'].default} alt={id} />
-                                                                                    </TableCell>);
+                                                                                }
                                                                             }
-                                                                            return (null);
-                                                                        })}
-                                                                    </TableRow>
-                                                                );
-                                                            })}
+                                                                            return (
 
-                                                        </TableBody>
-                                                    </Table>
-                                                </TableContainer>
+                                                                                <TableCell style={isSelected} padding="none" key={cIndex}>
+                                                                                    <img width="100%" height="100%" onClick={() => { this.setState({ nextTile: actualID }); }} src={images['./tile (' + tileID + ').png'].default} alt={id} />
+                                                                                </TableCell>);
+                                                                        }
+                                                                        return (null);
+                                                                    })}
+                                                                </TableRow>
+                                                            );
+                                                        })}
 
-                                                <div style={{ marginTop: 20, width: "100%" }}>
-                                                    <Divider variant="inset" style={{ marginLeft: 0, width: "100%" }}></Divider>
-                                                    <FormControl style={{ marginTop: 20, width: "100%" }} variant="outlined" className={classes.formControl}>
-                                                        <InputLabel>Layer</InputLabel>
-                                                        <Select
-                                                            value={this.state.layer}
-                                                            onChange={this.handleLayerChange}
-                                                            label="Layer"
-                                                        >
-                                                            <MenuItem value={0}>Layer 1</MenuItem>
-                                                            <MenuItem value={1}>Layer 2</MenuItem>
-                                                        </Select>
-                                                    </FormControl>
-                                                </div>
-                                            </Container>
+                                                    </TableBody>
+                                                </Table>
+                                            </TableContainer>
 
-                                        </Paper>
+                                            <div style={{ marginTop: 20, width: "100%" }}>
+                                                <Divider variant="inset" style={{ marginLeft: 0, width: "100%" }}></Divider>
+                                                <FormControl style={{ marginTop: 20, width: "100%" }} variant="outlined" className={classes.formControl}>
+                                                    <InputLabel>Layer</InputLabel>
+                                                    <Select
+                                                        value={this.state.layer}
+                                                        onChange={this.handleLayerChange}
+                                                        label="Layer"
+                                                    >
+                                                        <MenuItem value={0}>Layer 1</MenuItem>
+                                                        <MenuItem value={1}>Layer 2</MenuItem>
+                                                    </Select>
+                                                </FormControl>
+                                            </div>
+                                        </Container>
 
-                                    </Container>
-                                </Grid>
+                                    </Paper>
 
-                                <CenterGrid item xs={6} padding="0px" margin="0px">
-                                    <CenterContainer >
-                                        <Main {...this} />
-                                    </CenterContainer>
-                                </CenterGrid>
-
-                                <Grid item xs={3} padding="0px" margin="0px">
-                                    <Container style={{ paddingLeft: "0px" }} >
-                                        <Paper ref={this.functionRef}>Functions
-                                            <Container>
-                                                <Typography align="left"> Try a Preset:</Typography>
-
-                                                <Button color="primary" size="large" variant="outlined" onClick={() => { this.setState({ preset: 1 }); }}>Road</Button>
-                                                <Button color="primary" size="large" variant="outlined" onClick={() => { this.setState({ preset: 2 }); }}>Square</Button>
-                                                <Button color="primary" size="large" variant="outlined" onClick={() => { this.setState({ preset: 3 }); }}>Cross</Button>
-                                                <Button color="primary" size="large" variant="outlined" onClick={() => { this.setState({ preset: 4 }); }}>Junction</Button>
-                                                <Button color="primary" size="large" variant="outlined" onClick={() => { this.setState({ preset: 5 }); }}>Cave</Button>
-
-
-                                                <Typography align="left" style={{ marginTop: 20 }}> Save/Load</Typography>
-                                                <ButtonGroup color="primary">
-                                                    <Button onClick={() => { this.setState({ shouldSave: true }); }}>Save</Button>
-                                                    <Button onClick={() => { this.setState({ shouldLoad: true }); }}>Load</Button>
-                                                </ButtonGroup>
-
-                                                <div style={{ marginTop: 10 }}>
-                                                    <TextField ref={this.saveLoadRef}
-                                                        label=""
-                                                        multiline
-                                                        rows={10}
-                                                        variant="filled"
-                                                        fullWidth
-                                                    />
-                                                </div>
-
-                                                <div style={{ marginTop: 20 }}>
-                                                    <Typography align="left" style={{ marginTop: 10 }}> Create New</Typography>
-                                                    <FormControl variant="outlined" display="inline" className={classes.formControl}>
-                                                        <InputLabel>Size</InputLabel>
-                                                        <Select label="Size" value={this.state.newSize} onChange={this.handleNewSizeChange}>
-                                                            <MenuItem value={0}>8x8</MenuItem>
-                                                            <MenuItem value={1}>16x16</MenuItem>
-                                                            <MenuItem value={2}>32x32</MenuItem>
-                                                            <MenuItem value={3}>64x64</MenuItem>
-                                                            <MenuItem value={4}>128x128</MenuItem>
-                                                        </Select>
-                                                    </FormControl>
-                                                    <FormControl variant="outlined" display="inline" className={classes.formControl}>
-                                                        <InputLabel>Default Tile</InputLabel>
-                                                        <Select label="Default Tile" value={this.state.newTile} onChange={this.handleNewTileChange}>
-                                                            <MenuItem value={240}>Empty</MenuItem>
-                                                            <MenuItem value={191}>Grass</MenuItem>
-                                                            <MenuItem value={121}>Dirt</MenuItem>
-                                                            <MenuItem value={140}>Cobble</MenuItem>
-                                                            <MenuItem value={188}>Stone</MenuItem>
-                                                        </Select>
-                                                    </FormControl>
-                                                </div>
-
-                                                <ButtonGroup color="primary">
-                                                    <Button onClick={() => { this.setState({ createNew: true }); }}>Create</Button>
-                                                </ButtonGroup>
-                                            </Container>
-                                        </Paper>
-                                    </Container>
-                                </Grid>
+                                </Container>
                             </Grid>
-                        </div>
 
+                            <CenterGrid item xs={6} padding="0px" margin="0px">
+                                <CenterContainer >
+                                    <Box
+                                        display="flex"
+                                        justifyContent="center"
+                                        alignItems="center"
+                                        minHeight="88vh"
+                                    >
+                                        <Main {...this} />
+                                    </Box>
+                                </CenterContainer>
+                            </CenterGrid>
+
+                            <Grid item xs={3} padding="0px" margin="0px">
+                                <Container style={{ paddingLeft: "0px" }} >
+                                    <Paper ref={this.functionRef}>Functions
+                                        <Container>
+                                            <Typography align="left"> Try a Preset:</Typography>
+
+                                            <Button color="primary" size="large" variant="outlined" onClick={() => { this.setState({ preset: 1 }); }}>Road</Button>
+                                            <Button color="primary" size="large" variant="outlined" onClick={() => { this.setState({ preset: 2 }); }}>Square</Button>
+                                            <Button color="primary" size="large" variant="outlined" onClick={() => { this.setState({ preset: 3 }); }}>Cross</Button>
+                                            <Button color="primary" size="large" variant="outlined" onClick={() => { this.setState({ preset: 4 }); }}>Junction</Button>
+                                            <Button color="primary" size="large" variant="outlined" onClick={() => { this.setState({ preset: 5 }); }}>Cave</Button>
+
+
+                                            <Typography align="left" style={{ marginTop: 20 }}> Save/Load</Typography>
+                                            <ButtonGroup color="primary">
+                                                <Button onClick={() => { this.setState({ shouldSave: true }); }}>Save</Button>
+                                                <Button onClick={() => { this.setState({ shouldLoad: true }); }}>Load</Button>
+                                            </ButtonGroup>
+
+                                            <div style={{ marginTop: 10 }}>
+                                                <TextField ref={this.saveLoadRef}
+                                                    label=""
+                                                    multiline
+                                                    rows={10}
+                                                    variant="filled"
+                                                    fullWidth
+                                                />
+                                            </div>
+
+                                            <div style={{ marginTop: 20 }}>
+                                                <Typography align="left" style={{ marginTop: 10 }}> Create New</Typography>
+                                                <FormControl variant="outlined" display="inline" className={classes.formControl}>
+                                                    <InputLabel>Size</InputLabel>
+                                                    <Select label="Size" value={this.state.newSize} onChange={this.handleNewSizeChange}>
+                                                        <MenuItem value={0}>8x8</MenuItem>
+                                                        <MenuItem value={1}>16x16</MenuItem>
+                                                        <MenuItem value={2}>32x32</MenuItem>
+                                                        <MenuItem value={3}>64x64</MenuItem>
+                                                        <MenuItem value={4}>128x128</MenuItem>
+                                                    </Select>
+                                                </FormControl>
+                                                <FormControl variant="outlined" display="inline" className={classes.formControl}>
+                                                    <InputLabel>Default Tile</InputLabel>
+                                                    <Select label="Default Tile" value={this.state.newTile} onChange={this.handleNewTileChange}>
+                                                        <MenuItem value={240}>Empty</MenuItem>
+                                                        <MenuItem value={191}>Grass</MenuItem>
+                                                        <MenuItem value={121}>Dirt</MenuItem>
+                                                        <MenuItem value={140}>Cobble</MenuItem>
+                                                        <MenuItem value={188}>Stone</MenuItem>
+                                                    </Select>
+                                                </FormControl>
+                                            </div>
+
+                                            <ButtonGroup color="primary">
+                                                <Button onClick={() => { this.setState({ createNew: true }); }}>Create</Button>
+                                            </ButtonGroup>
+                                        </Container>
+                                    </Paper>
+                                </Container>
+                            </Grid>
+                        </Grid>
                     </div>
-                
+
+                </div>
+
             </div>
 
-                )
+        )
     }
 }

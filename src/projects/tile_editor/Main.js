@@ -110,7 +110,7 @@ export default class Main extends Component {
             code += "," + GameInstance.map.height;
             code += ",\n";
             for (var l = 0; l < GameInstance.map.numLayers; l++) {
-                code += "Layer " + l + ":\n";
+                code += " Layer " + l + ":\n";
                 for (var i = 0; i < GameInstance.map.height; i++) {
                     code += "\n"
                     for (var j = 0; j < GameInstance.map.width; j++) {
@@ -139,7 +139,6 @@ export default class Main extends Component {
                 let layers = [];
                 for (let l = 0; l < mapDetails[0]; l++) {
                     let dataString = layerStrings[l + 1].split(' ');
-                    console.log(layerStrings)
                     layers[l] = dataString[0].split(',');
                     //If there's an incorrect number of tiles, abort.
                     if (layers[l].length !== mapDetails[1] * mapDetails[2]) {
@@ -169,14 +168,16 @@ export default class Main extends Component {
         var dt = (now - this.lastTime) / 1000.0;
 
         this.lastTime = now;
-
         GameInstance.render(dt);
 
         window.requestAnimationFrame(this.update);
+
+        
     }
 
     componentDidMount() {
         const canvas = document.querySelector('canvas');
+        this.canvas = canvas;
 
         if (!canvas) {
             return;
@@ -187,7 +188,7 @@ export default class Main extends Component {
         });
 
         canvas.style.width = "100%";
-        canvas.style.height = "100%";
+        //canvas.style.height = "100%";
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
 
@@ -210,10 +211,12 @@ export default class Main extends Component {
 
     render() {
         return (
+            
             <canvas ref={GLR.canvasRef} id="canvas" style={{ border: '1px solid black', padding: '0px', margin: '0px' }}>
                 Your browser doesn't appear to support the
                 <code>&lt;canvas&gt;</code> element.
             </canvas>
+     
         )
     }
 }
