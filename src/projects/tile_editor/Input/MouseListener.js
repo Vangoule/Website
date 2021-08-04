@@ -1,7 +1,7 @@
 import GLR from '../GL/GLRenderer';
 
 class MouseListener {
-    constructor(){
+    constructor() {
         this.onWheelListeners = [];
         this.onDragListeners = [];
         this.onMoveListeners = [];
@@ -22,7 +22,8 @@ class MouseListener {
 
         GLR.gl.canvas.onWheel = (e) => {
             this.onWheelListeners.forEach(listener => {
-                listener.onWheel(e);
+                listener.onWheel(e); 
+                e.preventDefault();
             })
         }
 
@@ -32,7 +33,8 @@ class MouseListener {
             dragging = true;
             this.onClickListeners.forEach(listener => {
                 listener.onClick(x, y, true);
-            });
+            }); 
+            e.preventDefault();
         }
 
         GLR.gl.canvas.onmouseup = () => {
@@ -42,20 +44,30 @@ class MouseListener {
             });
         }
 
+        GLR.gl.canvas.onmouseleave = (e) => {
+            dragging = false;
+        }
+
+        GLR.gl.canvas.onmouseenter = (e) => {
+            dragging = false;
+        }
+
         GLR.gl.canvas.onmousemove = (e) => {
             if (dragging) {
-                var dx = x-e.clientX;
-                var dy = y-e.clientY;
+                var dx = x - e.clientX;
+                var dy = y - e.clientY;
                 x = e.clientX;
                 y = e.clientY;
                 this.onDragListeners.forEach(listener => {
-                    listener.onDrag(dx,dy, x, y);
+
+                    listener.onDrag(dx, dy, x, y);
+
                 });
             }
             this.onMoveListeners.forEach(listener => {
                 listener.onMove(x, y);
             });
-            
+
         }
     }
 

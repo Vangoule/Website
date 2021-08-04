@@ -8,31 +8,48 @@ export default class TileMap extends Renderable {
         super();
         this.numTiles = 0;
         this.tileSize = 0.5;
-        this.halfTileSize = this.tileSize / 2;
 
-        this.numLayers = 2;
+        this.numLayers = 1;
 
         this.vertices = []; //A single square, to be instanced across the tilemap.
-        this.indices = []; //A single square made of two triangles.
-        this.offsets = []; //The position of each square in the tilemap.
-
+        this.indices = [];  //A single square made of two triangles.
+        this.offsets = [];  //The position of each square in the tilemap.
 
         this.tiles = new Array(this.numLayers);
+
         for (let i = 0; i < this.tiles.length; i++) {
             this.tiles[i] = new Array(this.numTiles);
+            this.fillWorld(240, i);
         }
 
+        this.width = 0;
+        this.height = 0;
 
         this.tileID = new Array(this.numTiles);
+        this.emptyTileID = 240;
 
+    }
+
+    addLayer = () => {
+        this.tiles[this.numLayers] = new Array(this.numTiles);
+        this.fillWorld(this.emptyTileID, this.numLayers);
+        this.numLayers = this.numLayers+1;
     }
 
     /*
     Takes a square array and generates rendering data such as vertices and indices
     */
-    init = (numTiles) => {
+    init = (width, height) => {
 
-        this.numTiles = numTiles;
+        this.width = width;
+        this.height = height;
+        this.numTiles = width * height;
+
+        delete this.tiles;
+        this.tiles = new Array(this.numLayers);
+        for (let i = 0; i < this.tiles.length; i++) {
+            this.tiles[i] = new Array(this.numTiles); 
+        }
 
         this.tileSize = 0.5;
 
@@ -73,7 +90,6 @@ export default class TileMap extends Renderable {
         this.centerMap();
         this.atlasImage = Atlas;
         this.atlasTexture = GLR.getTexture(this.atlasImage);
-        GLR.addRenderable(this);
     };
 
     centerMap = () => {
@@ -90,23 +106,11 @@ export default class TileMap extends Renderable {
         }
     };
 
-
-    convertTo2DArray = (arr, size) =>
-    {
-        var len = arr.length + 1;
-        var newArr = [];              
-
-        for (var i = 0; (i + size) < len; i += size) {
-            newArr.push(arr.slice(i, i + size));
-        }
-        return newArr;
-    }
-
     /*Converts a 2D tile index to a 1D index*/
     getTileID = (x, y) => {
         if (x >= 0 && x < this.mapSize) {
-            if (y >= 0 && y < this.mapSize) {
-                return this.convertTo2DArray(this.tileID, this.mapSize)[y][x];
+            if (y >= 0 && y < this.mapSize) {               
+                return this.tileID[(y*this.mapSize)+x];
             }
         }
     };

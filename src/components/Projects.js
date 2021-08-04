@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { makeStyles } from '@material-ui/styles';
 import { withStyles } from '@material-ui/styles';
-import PropTypes from 'prop-types';
 
 import Snake from './images/snake.png';
-import Audio from './images/audio.png';
+//import Audio from './images/audio.png';
 import Tiles from './images/tiles.png';
-import Incremental from './images/incremental.png';
+//import Incremental from './images/incremental.png';
 
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
@@ -33,7 +31,7 @@ const ProjectContent = withStyles({
         height: "100%",
         width: "100%",
         overflow: "hidden",
-        
+
     },
 })(CardContent);
 
@@ -45,8 +43,8 @@ export default class Projects extends Component {
                 <h2>Projects</h2>
                 <div className={classes.root}>
                     <Grid container spacing={1} direction="row"
-                         justify="flex-start"
-                         alignItems="stretch">
+                        justify="flex-start"
+                        alignItems="stretch">
 
                         <Grid item xs={4}>
                             <Card className={classes.root}>
@@ -104,6 +102,29 @@ export default class Projects extends Component {
                                             className={classes.media}
                                             src={Snake}
                                             component="img"
+                                            title="Cellular Automata"
+                                            draggable={false} />
+                                        <ProjectContent>
+                                            <Typography color="white" gutterBottom variant="h5" component="h2">
+                                                Cellular Automata
+                                            </Typography>
+                                            <Typography variant="body2" color="white" component="p">
+                                                A set of cellular automata like Conways Game of Life.
+                                            </Typography>
+                                        </ProjectContent>
+                                    </Project>
+                                </NavLink>
+                            </Card>
+                        </Grid>
+
+                        {/* <Grid item xs={4}>
+                            <Card className={classes.root}>
+                                <NavLink to="/cultivation" >
+                                    <Project >
+                                        <CardMedia
+                                            className={classes.media}
+                                            src={Snake}
+                                            component="img"
                                             title="Cultivation"
                                             draggable={false} />
                                         <ProjectContent>
@@ -117,7 +138,7 @@ export default class Projects extends Component {
                                     </Project>
                                 </NavLink>
                             </Card>
-                        </Grid>
+                        </Grid> */}
 
                     </Grid>
                     {/* <Grid item xs>

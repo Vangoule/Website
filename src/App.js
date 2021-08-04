@@ -1,12 +1,9 @@
 //import logo from './logo.svg';
 import './App.css';
 
-import { useTheme, } from '@material-ui/styles';
-
 import Particles from 'react-particles-js';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Fragment } from 'react';
-
 import { Link } from 'react-scroll'
 
 import About from './components/About';
@@ -14,6 +11,7 @@ import Projects from './components/Projects';
 import Header from './components/Header';
 import Snake from './components/Snake';
 import Cultivation from './components/Cultivation';
+import CellularAutomata from './components/CellularAutomata'
 import TileEditor from './components/TileEditor';
 
 import * as React from 'react';
@@ -25,12 +23,17 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from "@material-ui/core/styles"
 import { darkTheme, lightTheme } from "./components/Theme"
 import { darkModeContext } from "./components/ThemeContext"
-
+window.onkeydown = (e) => {
+	console.log("hi");
+	//e.preventDefault();
+}
 const App = (props) => {
 
 	const DarkModeContext = React.useContext(darkModeContext);
 
 	const { darkMode, setDarkMode } = DarkModeContext
+
+	
 
 	React.useEffect(() => {
 		const theme = localStorage.getItem("preferred-theme")
@@ -131,6 +134,7 @@ const App = (props) => {
 					} />
 					<Route path="/snake" component={Snake} />
 					<Route path="/cultivation" component={Cultivation} />
+					<Route path="/cellular_automata" component={CellularAutomata} />
 					<Route path="/tile_editor" component={TileEditor} />
 					<Route component={Error} />
 				</Switch>

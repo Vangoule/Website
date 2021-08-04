@@ -1,12 +1,4 @@
 import React, { Component } from 'react';
-import { makeStyles } from '@material-ui/styles';
-import { withStyles } from '@material-ui/styles';
-
-// const useStyles = makeStyles((theme) => ({
-//     root: {
-//         flexGrow: 1,
-//     }
-// }));
 
 export default class Header extends Component {
     render() {
@@ -19,5 +11,3 @@ export default class Header extends Component {
         )
     }
 }
-
-//export default withStyles(useStyles)(Header);

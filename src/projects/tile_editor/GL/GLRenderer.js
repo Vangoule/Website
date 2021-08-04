@@ -3,13 +3,15 @@ import { mat4 } from "gl-matrix";
 import React from 'react';
 
 class GLRenderer {
-    /* Generic Functions */
+
     constructor() {
         this.canvasRef = React.createRef();
         this.mousePos = [];
         this.mousePos.x = 0;
         this.mousePos.y = 0;
         this.renderables = [];
+        this.tileMap = null;
+        this.canvas = null;
     }
 
     initGL = (webGL) => {
@@ -63,30 +65,6 @@ class GLRenderer {
         GL.uniformMatrix4fv(this.shader._pMatrix, false, this.pMatrix);
         GL.uniformMatrix4fv(this.shader._mvMatrix, false, this.mvMatrix);
 
-        for (var i = 0; i < this.renderables.length; i++) {
-            let renderable = this.renderables[i];
-
-            GL.bindBuffer(GL.ARRAY_BUFFER, renderable.vertexBuffer);
-            GL.bufferData(GL.ARRAY_BUFFER, new Float32Array(renderable.vertices), GL.STATIC_DRAW);
-            GL.bindBuffer(GL.ARRAY_BUFFER, null);
-
-            GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, renderable.indexBuffer);
-            GL.bufferData(GL.ELEMENT_ARRAY_BUFFER, new Uint16Array(renderable.indices), GL.STATIC_DRAW);
-            GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, null);
-
-            GL.bindBuffer(GL.ARRAY_BUFFER, renderable.uvBuffer);
-            GL.bufferData(GL.ARRAY_BUFFER, new Float32Array(renderable.uvs), GL.STATIC_DRAW);
-            GL.bindBuffer(GL.ARRAY_BUFFER, null);
-
-            GL.bindBuffer(GL.ARRAY_BUFFER, renderable.offsetBuffer);
-            GL.bufferData(GL.ARRAY_BUFFER, new Float32Array(renderable.offsets), GL.STATIC_DRAW);
-            GL.bindBuffer(GL.ARRAY_BUFFER, null);
-
-            GL.bindBuffer(GL.ARRAY_BUFFER, renderable.tileBuffer);
-            GL.bufferData(GL.ARRAY_BUFFER, new Float32Array(renderable.tiles), GL.STATIC_DRAW);
-            GL.bindBuffer(GL.ARRAY_BUFFER, null);
-        }
-
         this.zoom = 10;
     }
 
@@ -111,24 +89,24 @@ class GLRenderer {
         var canvasXMinusOneToOne = (2.0 * this.getCanvasX() / this.width - 1.0);
         var canvasYMinusOneToOne = (2.0 * this.getCanvasY() / this.height - 1.0);
 
-        var iX = (this.gameWorldX / 2) + Math.floor(canvasXMinusOneToOne / screenSpaceOneX );
-        var iY = (this.gameWorldY / 2) + Math.floor(canvasYMinusOneToOne / screenSpaceOneY );
+        var iX = (this.tileMap.width / 2) + Math.floor(canvasXMinusOneToOne / screenSpaceOneX);
+        var iY = (this.tileMap.height / 2) + Math.floor(canvasYMinusOneToOne / screenSpaceOneY);
 
         var index = [];
         index.x = iX;
         index.y = iY;
-        return index; 
+        return index;
     }
 
-    renderLayer = (layer, renderable) => {
+    renderLayer = (layer) => {
         const GL = this.gl;
-        GL.bindBuffer(GL.ARRAY_BUFFER, renderable.tileBuffer);
-        GL.bufferData(GL.ARRAY_BUFFER, new Float32Array(renderable.tiles[layer]), GL.STATIC_DRAW);
+        GL.bindBuffer(GL.ARRAY_BUFFER, this.tileMap.tileBuffer);
+        GL.bufferData(GL.ARRAY_BUFFER, new Float32Array(this.tileMap.tiles[layer]), GL.STATIC_DRAW);
         GL.vertexAttribPointer(this.shader._index, 1, GL.FLOAT, false, 0, 0);
         this.ext.vertexAttribDivisorANGLE(this.shader._index, 1);
 
-        GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, renderable.indexBuffer);
-        this.ext.drawElementsInstancedANGLE(GL.TRIANGLES, 6, GL.UNSIGNED_SHORT, 0, renderable.numTiles);
+        GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, this.tileMap.indexBuffer);
+        this.ext.drawElementsInstancedANGLE(GL.TRIANGLES, 6, GL.UNSIGNED_SHORT, 0, this.tileMap.numTiles);
         GL.flush();
     }
 
@@ -138,10 +116,9 @@ class GLRenderer {
         GL.clearColor(0, 0, 0, 1);
         GL.clear(this.gl.COLOR_BUFFER_BIT);
 
-        
+
         const canvas = document.querySelector('canvas');
-        if(canvas)     
-        {  
+        if (canvas) {
             canvas.style.width = "100%";
             canvas.style.height = "100%";
             canvas.width = canvas.offsetWidth;
@@ -150,105 +127,87 @@ class GLRenderer {
             GL.viewportWidth = canvas.width;
             GL.viewportHeight = canvas.height;
         }
+        this.canvas = canvas;
 
         this.width = GL.drawingBufferWidth;
         this.height = GL.drawingBufferHeight;
 
-        //Assuming a width of 800 and a height of 800. 800 / (8/2) = 800 / 4 = 200 or 1/4th of half of the screen. Assuming 16x16 map, 800/8 = 100 or 1/8th of half of the screen.
-        //This is used to scale the screen so that it always fills the view. It's half as we use -sc to sc as the range.
-        var sc = this.width / ((this.gameWorldX / 2));
-        this.sc = sc;
+        if (this.tileMap) {
+            //Assuming a width of 800 and a height of 800. 800 / (8/2) = 800 / 4 = 200 or 1/4th of half of the screen. Assuming 16x16 map, 800/8 = 100 or 1/8th of half of the screen.
+            //This is used to scale the screen so that it always fills the view. It's half as we use -sc to sc as the range.
+            var sc = this.width / ((this.tileMap.width / 2));
+            this.sc = sc;
 
-        //var index = this.getTileIndexAtMouse();
-        //console.log(index.x + " " + index.y + " ");
+            mat4.ortho(this.pMatrix, -this.width / sc, this.width / sc, -this.height / sc, this.height / sc, 0.1, 100.0);
+            mat4.identity(this.mvMatrix);
+            mat4.scale(this.mvMatrix, this.mvMatrix, [2, 2, 2]);
 
-        mat4.ortho(this.pMatrix, -this.width / sc, this.width / sc, -this.height / sc, this.height / sc, 0.1, 100.0);
-        mat4.identity(this.mvMatrix);
-        mat4.scale(this.mvMatrix, this.mvMatrix, [2, 2, 2]);
+            //Move the map back so we aren't inside the mesh.
+            var zoom = 1;
+            mat4.translate(this.mvMatrix, this.mvMatrix, [0.0, 0.0, -zoom]);
+            GL.uniform1f(this.shader._zoom, zoom);
 
-        //Move the map back so we aren't inside the mesh.
-        var zoom = 1;
-        mat4.translate(this.mvMatrix, this.mvMatrix, [0.0, 0.0, -zoom]);
-        GL.uniform1f(this.shader._zoom, zoom);
 
-        for (var i = 0; i < this.renderables.length; i++) {
-            let renderable = this.renderables[i];
-
-            if (renderable.atlasTexture.texture) {
+            if (this.tileMap.atlasTexture.texture) {
                 //Ensure that texture0 is free to use and activate it.
                 GL.activeTexture(GL.TEXTURE0);
 
                 //Bind the texture to this slot.
-                GL.bindTexture(GL.TEXTURE_2D, renderable.atlasTexture.texture);
+                GL.bindTexture(GL.TEXTURE_2D, this.tileMap.atlasTexture.texture);
 
                 //Send the texture as a uniform.
                 GL.uniform1i(this.shader._sampler, 0);
             }
 
-            GL.bindBuffer(GL.ARRAY_BUFFER, renderable.vertexBuffer);
+            GL.bindBuffer(GL.ARRAY_BUFFER, this.tileMap.vertexBuffer);
             GL.vertexAttribPointer(this.shader._position, 2, GL.FLOAT, false, 0, 0);
 
-            GL.bindBuffer(GL.ARRAY_BUFFER, renderable.uvBuffer);
+            GL.bindBuffer(GL.ARRAY_BUFFER, this.tileMap.uvBuffer);
             GL.vertexAttribPointer(this.shader._uv, 2, GL.FLOAT, false, 0, 0);
 
-            GL.bindBuffer(GL.ARRAY_BUFFER, renderable.offsetBuffer);
+            GL.bindBuffer(GL.ARRAY_BUFFER, this.tileMap.offsetBuffer);
             GL.vertexAttribPointer(this.shader._offset, 2, GL.FLOAT, false, 0, 0);
             this.ext.vertexAttribDivisorANGLE(this.shader._offset, 1);
 
             GL.uniformMatrix4fv(this.shader._pMatrix, false, this.pMatrix);
             GL.uniformMatrix4fv(this.shader._mvMatrix, false, this.mvMatrix);
 
-            for (let layer = 0; layer < renderable.numLayers; layer++) {
-                this.renderLayer(layer, renderable);
+            for (let layer = 0; layer < this.tileMap.numLayers; layer++) {
+                this.renderLayer(layer);
             }
         }
-
     }
 
-    addRenderable = (renderable) => {
+    initTilemap = (tilemap) => {
         const GL = this.gl;
+        this.tileMap = tilemap;
 
-        this.renderables.push(renderable);
-        renderable.id = this.renderables.length - 1;
-
-        renderable.vertexBuffer = GL.createBuffer();
-        GL.bindBuffer(GL.ARRAY_BUFFER, renderable.vertexBuffer);
-        GL.bufferData(GL.ARRAY_BUFFER, new Float32Array(renderable.vertices), GL.STATIC_DRAW);
+        this.tileMap.vertexBuffer = GL.createBuffer();
+        GL.bindBuffer(GL.ARRAY_BUFFER, this.tileMap.vertexBuffer);
+        GL.bufferData(GL.ARRAY_BUFFER, new Float32Array(this.tileMap.vertices), GL.STATIC_DRAW);
         GL.bindBuffer(GL.ARRAY_BUFFER, null);
 
-        renderable.indexBuffer = GL.createBuffer();
-        GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, renderable.indexBuffer);
-        GL.bufferData(GL.ELEMENT_ARRAY_BUFFER, new Uint16Array(renderable.indices), GL.STATIC_DRAW);
+        this.tileMap.indexBuffer = GL.createBuffer();
+        GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, this.tileMap.indexBuffer);
+        GL.bufferData(GL.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.tileMap.indices), GL.STATIC_DRAW);
         GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, null);
 
-        renderable.uvBuffer = GL.createBuffer();
-        GL.bindBuffer(GL.ARRAY_BUFFER, renderable.uvBuffer);
-        GL.bufferData(GL.ARRAY_BUFFER, new Float32Array(renderable.uvs), GL.STATIC_DRAW);
+        this.tileMap.uvBuffer = GL.createBuffer();
+        GL.bindBuffer(GL.ARRAY_BUFFER, this.tileMap.uvBuffer);
+        GL.bufferData(GL.ARRAY_BUFFER, new Float32Array(this.tileMap.uvs), GL.STATIC_DRAW);
         GL.bindBuffer(GL.ARRAY_BUFFER, null);
 
-        renderable.offsetBuffer = GL.createBuffer();
-        GL.bindBuffer(GL.ARRAY_BUFFER, renderable.offsetBuffer);
-        GL.bufferData(GL.ARRAY_BUFFER, new Float32Array(renderable.offsets), GL.STATIC_DRAW);
+        this.tileMap.offsetBuffer = GL.createBuffer();
+        GL.bindBuffer(GL.ARRAY_BUFFER, this.tileMap.offsetBuffer);
+        GL.bufferData(GL.ARRAY_BUFFER, new Float32Array(this.tileMap.offsets), GL.STATIC_DRAW);
         GL.bindBuffer(GL.ARRAY_BUFFER, null);
 
-        renderable.tileBuffer = GL.createBuffer();
-        GL.bindBuffer(GL.ARRAY_BUFFER, renderable.tileBuffer);
-        GL.bufferData(GL.ARRAY_BUFFER, new Float32Array(renderable.tiles), GL.STATIC_DRAW);
+        this.tileMap.tileBuffer = GL.createBuffer();
+        GL.bindBuffer(GL.ARRAY_BUFFER, this.tileMap.tileBuffer);
+        GL.bufferData(GL.ARRAY_BUFFER, new Float32Array(this.tileMap.tiles), GL.STATIC_DRAW);
         GL.bindBuffer(GL.ARRAY_BUFFER, null);
-    }
 
-    removeRenderable = (renderable) => {
-        if (renderable.id > -1) {
-            this.renderables.splice(renderable.id, 1);
-        }
     }
-
-    removeRenderableID = (id) => {
-        if (id > -1) {
-            this.renderables.splice(id, 1);
-        }
-    }
-
 }
 
 const GLR = new GLRenderer();

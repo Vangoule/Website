@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
-import ListItemText from '@material-ui/core/ListItemText';
 
 import Timeline from '@material-ui/lab/Timeline';
 import TimelineItem from '@material-ui/lab/TimelineItem';
