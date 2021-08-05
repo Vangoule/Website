@@ -23,10 +23,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from "@material-ui/core/styles"
 import { darkTheme, lightTheme } from "./components/Theme"
 import { darkModeContext } from "./components/ThemeContext"
-window.onkeydown = (e) => {
-	console.log("hi");
-	//e.preventDefault();
-}
+
 const App = (props) => {
 
 	const DarkModeContext = React.useContext(darkModeContext);

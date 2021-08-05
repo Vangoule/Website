@@ -90,7 +90,7 @@ export default class Main extends Component {
                     height = 8;
             }
 
-            GameInstance.numLayers = 1;
+            GameInstance.map.numLayers = 1;
             GameInstance.map.init(width, height);
             GameInstance.map.fillWorld(this.props.state.newTile, 0);
             GLR.initTilemap(GameInstance.map);
@@ -146,7 +146,6 @@ export default class Main extends Component {
                         return false;
                     }
                 }
-                console.log(mapDetails[0] + " " + mapDetails[1] + " " + mapDetails[2])
                 GameInstance.map.numLayers = mapDetails[0];
                 GameInstance.map.init(mapDetails[1], mapDetails[2]);
 

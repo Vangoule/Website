@@ -55,15 +55,14 @@ class Game {
 			var id = this.map.getTileID(index.x, index.y);
 			if (id < 0 || id > (this.map.numTiles)) { id = 0; console.log("ID out of bounds"); return; }
 			if (id === undefined) { id = -1; console.log("Undefined Tile"); return; }
-			
+			if (this.currentLayer === undefined){ return; }
+
 			//If the layer doesn't exist yet, create it.
 			if (this.currentLayer + 1 > this.map.numLayers) {
 				this.map.addLayer();
 			}
 
 			this.map.tiles[this.currentLayer][id] = this.nextTile
-
-			console.log(this.oldTile + " " + this.nextTile);
 		}
 		this.oldTileIndex = index;
 		this.oldTile = this.nextTile;
