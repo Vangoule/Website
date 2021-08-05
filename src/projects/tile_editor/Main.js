@@ -211,7 +211,7 @@ export default class Main extends Component {
     render() {
         return (
             
-            <canvas ref={GLR.canvasRef} id="canvas" style={{ border: '1px solid black', padding: '0px', margin: '0px' }}>
+            <canvas ref={GLR.canvasRef} id="canvas" style={{ border: '1px solid black' }}>
                 Your browser doesn't appear to support the
                 <code>&lt;canvas&gt;</code> element.
             </canvas>

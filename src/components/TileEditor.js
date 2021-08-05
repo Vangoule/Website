@@ -89,13 +89,6 @@ const TableCell = withStyles({
     }
 })(NormalTableCell);
 
-const CenterContainer = withStyles({
-    root: {
-        padding: "0px",
-        margin: "0px",
-    }
-})(Container);
-
 const Paper = withStyles({
     root: {
         height: '100%',
@@ -244,16 +237,17 @@ export default class TileEditor extends Component {
                             </Grid>
 
                             <CenterGrid item xs={6} padding="0px" margin="0px">
-                                <CenterContainer >
+                                <Container>
                                     <Box
                                         display="flex"
                                         justifyContent="center"
+                                        justify="center"
                                         alignItems="center"
                                         minHeight="88vh"
                                     >
                                         <Main {...this} />
                                     </Box>
-                                </CenterContainer>
+                                </Container>
                             </CenterGrid>
 
                             <Grid item xs={3} padding="0px" margin="0px">
