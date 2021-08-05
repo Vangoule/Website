@@ -15,7 +15,7 @@ class Game {
 		this.curMouseTileID = undefined;
 
 		this.currentLayer = 0;
-		this.nextTile = 200;
+		this.nextTile = 191;
 
 		this.oldTileIndex = [];
 		this.oldTile = this.nextTile;
@@ -53,8 +53,8 @@ class Game {
 			this.curMouseTileX = index.x;
 			this.curMouseTileY = index.y;
 			var id = this.map.getTileID(index.x, index.y);
-			if (id < 0 || id > (this.map.numTiles)) { id = 0; console.log("ID out of bounds"); return; }
-			if (id === undefined) { id = -1; console.log("Undefined Tile"); return; }
+			if (id < 0 || id > (this.map.numTiles)) { id = 0; return; }
+			if (id === undefined) { id = -1;  return; }
 			if (this.currentLayer === undefined) { return; }
 
 			//If the layer doesn't exist yet, create it.
