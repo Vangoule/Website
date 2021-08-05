@@ -6,6 +6,8 @@ class MouseListener {
         this.onDragListeners = [];
         this.onMoveListeners = [];
         this.onClickListeners = [];
+
+        
     }
 
     clear = () => {
@@ -19,6 +21,11 @@ class MouseListener {
         var x = 0;
         var y = 0;
         var dragging = false;
+
+        //This will still dragging getting stuck when moving the mouse outside the canvas.
+        window.addEventListener('mouseup', function (event) {
+			dragging = false;
+		})
 
         GLR.gl.canvas.onWheel = (e) => {
             this.onWheelListeners.forEach(listener => {
@@ -45,11 +52,11 @@ class MouseListener {
         }
 
         GLR.gl.canvas.onmouseleave = (e) => {
-            dragging = false;
+
         }
 
         GLR.gl.canvas.onmouseenter = (e) => {
-            dragging = false;
+
         }
 
         GLR.gl.canvas.onmousemove = (e) => {

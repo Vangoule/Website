@@ -55,7 +55,7 @@ class Game {
 			var id = this.map.getTileID(index.x, index.y);
 			if (id < 0 || id > (this.map.numTiles)) { id = 0; console.log("ID out of bounds"); return; }
 			if (id === undefined) { id = -1; console.log("Undefined Tile"); return; }
-			if (this.currentLayer === undefined){ return; }
+			if (this.currentLayer === undefined) { return; }
 
 			//If the layer doesn't exist yet, create it.
 			if (this.currentLayer + 1 > this.map.numLayers) {
@@ -70,7 +70,7 @@ class Game {
 
 	onDrag = (dx, dy, x, y) => {
 		this.placeTile();
-		
+
 
 	}
 
