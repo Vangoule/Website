@@ -322,10 +322,6 @@ export default class Main extends Component {
             {
                 value: 16,
                 label: '16',
-            },
-            {
-                value: 32,
-                label: '32',
             }
         ];
 
@@ -570,6 +566,7 @@ export default class Main extends Component {
                                     <Typography align="left" paddingTop="10px">Generation: {this.state.generation}  </Typography>
                                     <Typography align="left" paddingTop="10px">Population: {this.state.population} </Typography>
                                     <Typography variant="h4" gutterBottom>Settings</Typography>
+
                                     {this.state.generation !== 0 &&
                                         <IconButton onClick={() => { GameInstance.resetGeneration(); }}>
                                             <HistoryIcon />
@@ -581,7 +578,7 @@ export default class Main extends Component {
                                         </IconButton>
                                     }
                                     {FSM.getStateID() !== FSM.states.play &&
-                                        <IconButton onClick={() => { GameInstance.start(); console.log(GameInstance.grid.cells); }}>
+                                        <IconButton onClick={() => { GameInstance.start(); }}>
                                             <PlayArrow />
                                         </IconButton>
                                     }

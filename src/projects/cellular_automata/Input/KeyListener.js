@@ -10,8 +10,11 @@ class KeyListener {
     }
 
     keyUp = (e) => {
-        //e.preventDefault();
-        //e.stopPropagation();
+        if(e.keyCode === 32)
+        {
+            e.preventDefault();
+            e.stopPropagation();
+        }
         this.onKeyUpListeners.forEach(listener => {
             listener.onKeyUp(e);
         })

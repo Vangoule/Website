@@ -155,7 +155,6 @@ class Game {
 				case 65: //A
 					break;
 				case 83: //S
-
 					break;
 				case 68: //D
 					break;
