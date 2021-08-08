@@ -50,7 +50,7 @@ const CenterGrid = withStyles({
 
 const Container = withStyles({
     root: {
-        height: "88vh",
+        height: "89vh",
         minHeight: 500,
         overflow: "hidden",
         //       border: "1px solid blue",

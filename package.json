@@ -15,6 +15,7 @@
     "fontsource-roboto": "^4.0.0",
     "gl-matrix": "^3.3.0",
     "react": "^18.0.0-alpha-ed6c091fe-20210701",
+    "react-custom-scrollbars-2": "^4.4.0",
     "react-dom": "^18.0.0-alpha-9b76d2d7b-20210719",
     "react-helmet": "^6.1.0",
     "react-particles-js": "^3.4.1",

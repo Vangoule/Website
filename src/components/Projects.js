@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/styles';
 import Snake from './images/snake.png';
 //import Audio from './images/audio.png';
 import Tiles from './images/tiles.png';
+import Cellular from './images/cellular_automata.png';
 //import Incremental from './images/incremental.png';
 
 import Grid from '@material-ui/core/Grid';
@@ -96,11 +97,11 @@ export default class Projects extends Component {
 
                         <Grid item xs={4}>
                             <Card className={classes.root}>
-                                <NavLink to="/cultivation" >
+                                <NavLink to="/cellular_automata" >
                                     <Project >
                                         <CardMedia
                                             className={classes.media}
-                                            src={Snake}
+                                            src={Cellular}
                                             component="img"
                                             title="Cellular Automata"
                                             draggable={false} />
