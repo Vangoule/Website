@@ -10,6 +10,7 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import { Grid, Typography, IconButton, TableBody, TableCell, TableRow, Table, Container } from '@material-ui/core';
 import NormalContainer from '@material-ui/core/Container';
 import CVImg from './images/CV.png';
+import PDF from './CV.pdf';
 const CenterContainer = withStyles({
     root: {
         height: "81vh",
@@ -76,7 +77,7 @@ export default class CV extends Component {
                             </Grid>
 
                             <CenterContainer align="center">
-                                <Document file="./CV.pdf"
+                                <Document file={PDF}
                                     onLoadSuccess={this.onDocumentLoadSuccess}
                                     options={options}>
 
