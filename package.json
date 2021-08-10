@@ -19,6 +19,7 @@
     "react-dom": "^18.0.0-alpha-9b76d2d7b-20210719",
     "react-helmet": "^6.1.0",
     "react-particles-js": "^3.4.1",
+    "react-pdf": "^5.3.2",
     "react-router-dom": "^5.2.0",
     "react-router-hash-link": "^2.4.3",
     "react-scripts": "4.0.3",

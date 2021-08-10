@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Divider from '@material-ui/core/Divider';
+import { NavLink } from 'react-router-dom';
+
 
 import Timeline from '@material-ui/lab/Timeline';
 import TimelineItem from '@material-ui/lab/TimelineItem';
@@ -12,10 +13,13 @@ import TimelineDot from '@material-ui/lab/TimelineDot';
 import Work from '@material-ui/icons/Work';
 import School from '@material-ui/icons/School';
 
+import Divider from '@material-ui/core/Divider';
+
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { styled } from '@material-ui/styles';
 
+import CV from './images/CV.png';
 const TimelinePaper = styled(Paper)(({ theme }) => ({
     padding: '6px 16px',
 }));
@@ -37,15 +41,17 @@ export default class About extends Component {
                 <h3>About Me</h3>
                 <Divider variant="inset" />
                 <MainParagraph>
-    
                         Hi, I'm Thomas Harris. I've been interested in all things related to computers since a young age. Programming being something I did as a hobby for a long time, due to this I knew that I wanted to make it my career.
                         I had always loved working on computer games, but decided to keep it more of a hobby while pursuing a more generic programming career, this led to my decision to choose Computer Science as a degree.
-                        I've now been working as a Software Engineer for more than 2 years. My greatest dream is to one day finish a hobby project without shelving it for the next one.
+                        I've now been working as a Software Engineer for almost 3 years.            
                 </MainParagraph>
-
+                
+                <NavLink to="/CV"><img src={CV} alt="CV"></img>
+                </NavLink>
+                
                 <h3>Qualifications and Experience</h3>
                 <Divider variant="inset" />
-
+    
                 <Timeline align="alternate">
                     <TimelineItem>
                         <TimelineOppositeContent>
@@ -66,7 +72,7 @@ export default class About extends Component {
                             <TimelineConnector />
                         </TimelineSeparator>
                         <TimelineContent>
-                        <Date>2019 –</Date>
+                        <Date>2019 – Present</Date>
                         </TimelineContent>
                     </TimelineItem>
 

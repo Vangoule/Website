@@ -27,7 +27,7 @@ export default class Main extends Component {
     };
 
     beginAuto = () => {
-        this.autoInterval = setInterval(this.autoUpdate, 100);
+        this.updateLoop = setInterval(this.autoUpdate, 100);
     };
 
     init() {
@@ -169,7 +169,7 @@ export default class Main extends Component {
         this.lastTime = now;
         GameInstance.render(dt);
 
-        window.requestAnimationFrame(this.update);
+        this.renderLoop = window.requestAnimationFrame(this.update);
 
         
     }
@@ -205,7 +205,8 @@ export default class Main extends Component {
     }
 
     componentWillUnmount() {
-        clearInterval(this.autoInterval);
+        window.cancelAnimationFrame(this.renderLoop);
+        window.clearTimeout(this.updateLoop);
     }
 
     render() {

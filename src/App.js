@@ -10,6 +10,7 @@ import About from './components/About';
 import Projects from './components/Projects';
 import Header from './components/Header';
 import Snake from './components/Snake';
+import CV from './components/CV';
 import Cultivation from './components/Cultivation';
 import CellularAutomata from './components/CellularAutomata'
 import TileEditor from './components/TileEditor';
@@ -129,6 +130,7 @@ const App = (props) => {
 							</div>
 						</Fragment>
 					} />
+					<Route path="/cv" component={CV} />
 					<Route path="/snake" component={Snake} />
 					<Route path="/cultivation" component={Cultivation} />
 					<Route path="/cellular_automata" component={CellularAutomata} />

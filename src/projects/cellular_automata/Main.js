@@ -84,7 +84,7 @@ export default class Main extends Component {
 
         this.setState({ generation: GameInstance.generation });
         this.setState({ population: GameInstance.population });
-        setTimeout(this.autoUpdate, this.state.tickRate);
+        this.updateLoop = setTimeout(this.autoUpdate, this.state.tickRate);
     };
 
     init() {
@@ -114,7 +114,7 @@ export default class Main extends Component {
 
         GameInstance.render(dt);
 
-        window.requestAnimationFrame(this.update);
+        this.loop = window.requestAnimationFrame(this.update);
     }
 
     componentDidMount() {
@@ -220,6 +220,9 @@ export default class Main extends Component {
     }
 
     componentWillUnmount() {
+
+        window.cancelAnimationFrame(this.loop);
+        window.clearTimeout(this.updateLoop);
     }
 
     save = () => {

@@ -126,9 +126,6 @@ export default class TileEditor extends Component {
             newSize: 0,
             createNew: false,
         }
-
-
-
     }
 
     handleLayerChange = (event) => {
