@@ -4,13 +4,19 @@ import { withStyles } from '@material-ui/styles';
 import { HashLink } from 'react-router-hash-link';
 
 import ThemeMode from './ThemeMode.js';
-import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
+
+import { Document, Page } from 'react-pdf';
+import { pdfjs } from 'react-pdf';
+ 
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import { Grid, Typography, IconButton, TableBody, TableCell, TableRow, Table, Container } from '@material-ui/core';
 import NormalContainer from '@material-ui/core/Container';
 import CVImg from './images/CV.png';
 import PDF from './CV.pdf';
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+
 const CenterContainer = withStyles({
     root: {
         height: "81vh",
@@ -59,7 +65,7 @@ export default class CV extends Component {
     render() {
         const classes = this.props;
         const options = {
-            cMapUrl: 'cmaps/',
+            cMapUrl: `//cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjs.version}/cmaps/`,
             cMapPacked: true,
         };
         return (
@@ -79,9 +85,9 @@ export default class CV extends Component {
                             <CenterContainer align="center">
                                 <Document file={PDF}
                                     onLoadSuccess={this.onDocumentLoadSuccess}
-                                    options={options}>
+                                    options={options} >
 
-                                    <Page width="800" pageNumber={this.state.pageNumber} />
+                                    <Page pageNumber={this.state.pageNumber}  width={800} />
                                 </Document>
                             </CenterContainer>
                             <Container width="25%" align="center">
@@ -107,7 +113,6 @@ export default class CV extends Component {
                                     </TableBody>
                                 </Table>
                             </Container>
-
                         </section>
                     </div>
                 </div>
