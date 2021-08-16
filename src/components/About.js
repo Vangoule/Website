@@ -46,8 +46,8 @@ export default class About extends Component {
                         I've now been working as a Software Engineer for almost 3 years.            
                 </MainParagraph>
                 
-                <NavLink to="/CV"><img src={CV} alt="CV"></img>
-                </NavLink>
+                {/* <NavLink to="/CV"><img src={CV} alt="CV"></img>
+                </NavLink> */}
                 
                 <h3>Qualifications and Experience</h3>
                 <Divider variant="inset" />
