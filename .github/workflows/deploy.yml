@@ -21,7 +21,7 @@ jobs:
       env:
         CI: true
     - name: Publish to Github Packages Registry
-      uses: elgohr/Publish-Docker-Github-Action@master
+      uses: elgohr/Publish-Docker-Github-Action@v5
       with:
         name: Vangoule/Website/main
         registry: docker.pkg.github.com
